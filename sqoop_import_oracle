@@ -32,7 +32,7 @@ sleep 1
 printf "\n"
 
 
-sqoop import -Dmapred.job.queue.name=araprd_q1.aradm_sq1 -Dmapred.map.tasks.speculative.execution=false \
+sqoop import -Dmapred.map.tasks.speculative.execution=false \
 --driver 'net.sourceforge.jtds.jdbc.Driver' \
 --connect "jdbc:oracle:thin:@(description=(address=(protocol=tcp)(host=YOUR_HOST_ADDRESS)(port=YOUR_PORT_NO))(connect_data=(SERVER = DEDICATED)(SERVICE_NAME=YOUR_DB_SERVICE)_NM))" \
 --username YOUR_DB_USER_NAME \
