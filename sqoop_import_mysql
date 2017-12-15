@@ -31,7 +31,7 @@ mailx -s "Sqoop Database : ${tgt_db_nm} , Table : ${tgt_tbl_nm} job started" -r 
 sleep 1
 printf "\n"
 
-sqoop import -Dmapred.job.queue.name=araprd_q1.aradm_sq1 \
+sqoop import \
 --connect jdbc:mysql://YOUR_HOST_ADDRESS:YOUR_PORT_NO/YOUR_SOURCE_DB_NAME \
 --username YOUR_DB_USER_NAME \
 --password YOUR_DB_PASSWORD \
