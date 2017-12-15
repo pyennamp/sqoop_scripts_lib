@@ -16,7 +16,7 @@ printf "\n"
 
 
 ############creating log files for hive variable creation
-log_file_name=$proj_folder/sqoop_vldt_${tgt_db_nm}_${tgt_tbl_nm}_`date "+%Y%m%d%H%M%S"`.log
+log_file_name=$proj_folder/sqoop_vldt_{YOUR_SCHEMA_NAME}_{YOUR_TABLE_NAME}_`date "+%Y%m%d%H%M%S"`.log
 touch $log_file_name
 exec >> $log_file_name;
 exec 2>> $log_file_name;
