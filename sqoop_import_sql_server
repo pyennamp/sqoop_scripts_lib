@@ -1,0 +1,61 @@
+#!/bin/bash
+
+############Declare Environment Variables
+
+export HIVE_CONF_DIR="_hive_conf_dir_"
+
+############Team Distribution list
+
+team_dl="mail_id "
+
+############Declare log directory
+printf "\n"
+proj_folder="/mapr/datalake/uhc/ei/pi_ara/theta/projects/data_management/dm/de/logs/slogs"
+sqoop_loc=$8
+printf "\n"
+
+
+############creating log files for hive variable creation
+log_file_name=$proj_folder/sqoop_vldt_${tgt_db_nm}_${tgt_tbl_nm}_`date "+%Y%m%d%H%M%S"`.log
+touch $log_file_name
+exec >> $log_file_name;
+exec 2>> $log_file_name;
+
+
+printf "\n"
+echo $log_file_name
+printf "\n"
+echo "Script executed by `whoami` at `date "+%Y-%m-%d %H:%M:%S"`"
+printf "\n"
+mailx -s "Sqoop Database : ${tgt_db_nm} , Table : ${tgt_tbl_nm} job started" -r sqoop_noreply@you.com $team_dl <<<"Sqoop Database : ${tgt_db_nm} , Table : ${tgt_tbl_nm} job started"
+sleep 1
+printf "\n"
+
+
+sqoop import -Dmapred.job.queue.name=araprd_q1.aradm_sq1 -Dmapred.map.tasks.speculative.execution=false \
+--driver 'net.sourceforge.jtds.jdbc.Driver' \
+--connect "jdbc:jtds:sqlserver:/YOUR_HOST_ADDRESS:YOUR_PORT_NO/YOUR_SOURCE_DB_NAME;user=YOUR_DB_USER_NAME;password=YOUR_DB_PASSWORD" \
+--query "select * from SCHEMA_NAME.TABLE_NAME where \$CONDITIONS"  \
+--target-dir YOUR_SQOOP_LOCATION \
+--delete-target-dir \
+--fields-terminated-by '\001' \
+--lines-terminated-by '\n' \
+--null-string '\\N' \
+--null-non-string '\\N' \
+-m 1;
+
+sq=$?
+
+	if [ $sq -eq 0 ]; then
+		echo "Sqoop Database : ${tgt_db_nm} , Table : ${tgt_tbl_nm} completed successfully"
+		mailx -a $log_file_name -s "Data sqooped and validated Successfully for Database : ${tgt_db_nm} , Table : ${tgt_tbl_nm}.There were no observed issues" -r sqoop_noreply@you.com $team_dl
+		sleep 1
+	    else
+		echo "Sqoop Database : ${tgt_db_nm} , Table : ${tgt_tbl_nm} failed and exit status is : $sq"
+		mailx -a $log_file_name -s "Data sqoop failed for Database : ${tgt_db_nm} , Table : ${tgt_tbl_nm}." -r sqoop_noreply@you.com $team_dl
+		echo "Aborting the script execution...."
+		sleep 1
+		exit
+	fi 
+
+echo "EOF"
