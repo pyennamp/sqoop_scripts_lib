@@ -32,7 +32,7 @@ sleep 1
 printf "\n"
 
 
-sqoop import -Dmapred.job.queue.name=araprd_q1.aradm_sq1 -Dmapred.map.tasks.speculative.execution=false \
+sqoop import -Dmapred.map.tasks.speculative.execution=false \
 --driver 'net.sourceforge.jtds.jdbc.Driver' \
 --connect "jdbc:jtds:sqlserver:/YOUR_HOST_ADDRESS:YOUR_PORT_NO/YOUR_SOURCE_DB_NAME;user=YOUR_DB_USER_NAME;password=YOUR_DB_PASSWORD" \
 --query "select * from SCHEMA_NAME.TABLE_NAME where \$CONDITIONS"  \
