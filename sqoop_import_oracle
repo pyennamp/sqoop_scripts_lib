@@ -10,7 +10,7 @@ team_dl="mail_id "
 
 ############Declare log directory
 printf "\n"
-proj_folder="/mapr/datalake/uhc/ei/pi_ara/theta/projects/data_management/dm/de/logs/slogs"
+proj_folder="/home/logs/slogs"
 sqoop_loc=$8
 printf "\n"
 
